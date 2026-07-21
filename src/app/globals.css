@@ -64,7 +64,7 @@
   --boom-black: oklch(0.13 0.012 40);
   --boom-surface: oklch(0.17 0.015 40);
   /* lighter orange — used only for background glows */
-  --stage-deep: oklch(0.42 0.11 45);
+  --stage-deep: oklch(0.52 0.13 45);
   --stage: oklch(0.64 0.17 48);
   --stage-bright: oklch(0.78 0.19 52);
   --acid: oklch(0.9 0.18 100);
@@ -129,11 +129,37 @@
   /* The green stage light — hero & footer */
   .stage-radial {
     background:
+      /* Light from the left edge */
       radial-gradient(
-        116% 80% at 50% 44%,
+        85% 100% at 0% 50%,
         var(--stage) 0%,
-        var(--stage-deep) 52%,
-        transparent 78%
+        var(--stage-deep) 40%,
+        color-mix(in oklch, var(--stage-deep), transparent 55%) 62%,
+        transparent 100%
+      ),
+      /* Light from the right edge */
+      radial-gradient(
+        85% 100% at 100% 50%,
+        var(--stage) 0%,
+        var(--stage-deep) 40%,
+        color-mix(in oklch, var(--stage-deep), transparent 55%) 62%,
+        transparent 100%
+      ),
+      /* Light from the top edge */
+      radial-gradient(
+        100% 85% at 50% 0%,
+        var(--stage) 0%,
+        var(--stage-deep) 40%,
+        color-mix(in oklch, var(--stage-deep), transparent 55%) 62%,
+        transparent 100%
+      ),
+      /* Light from the bottom edge */
+      radial-gradient(
+        100% 85% at 50% 100%,
+        var(--stage) 0%,
+        var(--stage-deep) 40%,
+        color-mix(in oklch, var(--stage-deep), transparent 55%) 62%,
+        transparent 100%
       );
   }
   .stage-radial-bottom {

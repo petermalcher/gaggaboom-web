@@ -120,7 +120,7 @@ export function Navbar() {
                   e.preventDefault();
                   scrollToId("contact");
                 }}
-                className="text-foreground outline-none transition-colors hover:text-acid focus-visible:text-acid"
+                className="outline-none transition-colors hover:text-foreground focus-visible:text-foreground"
               >
                 Kontakt
               </a>

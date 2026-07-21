@@ -117,14 +117,16 @@ export function Hero() {
   const vh = useSvh();
 
   const { scrollY } = useScroll();
-  const imgScrollY = useTransform(scrollY, [0, vh], [0, reduce ? 0 : -60]);
-  const wordScrollY = useTransform(scrollY, [0, vh], [0, reduce ? 0 : 110]);
-  const glowScrollY = useTransform(scrollY, [0, vh], [0, reduce ? 0 : 40]);
-  const fade = useTransform(scrollY, [0, vh * 0.7], [1, 0]);
+  // Gentler parallax — smaller offsets so layers drift less as the hero leaves.
+  const imgScrollY = useTransform(scrollY, [0, vh], [0, reduce ? 0 : -32]);
+  const wordScrollY = useTransform(scrollY, [0, vh], [0, reduce ? 0 : 60]);
+  const glowScrollY = useTransform(scrollY, [0, vh], [0, reduce ? 0 : 22]);
+  // Fade out later and over a longer stretch, so the exit is softer.
+  const fade = useTransform(scrollY, [vh * 0.15, vh], [1, 0]);
 
-  // From 50% scrolled, darken the whole hero in lockstep with the
-  // scroll — fully black already at 75% of the viewport height.
-  const darkness = useTransform(scrollY, [vh * 0.5, vh * 0.75], [0, 1]);
+  // Darken the hero gradually across the whole first viewport instead of
+  // a tight 50–75% window, so it dims smoothly rather than snapping black.
+  const darkness = useTransform(scrollY, [vh * 0.35, vh], [0, 1]);
 
   return (
     <MotionConfig reducedMotion="user">
