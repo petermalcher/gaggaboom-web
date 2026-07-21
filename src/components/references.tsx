@@ -93,7 +93,7 @@ function ClusterBlock({ cluster }: { cluster: Cluster }) {
 export function References() {
   return (
     <MotionConfig reducedMotion="user">
-      <section id="referenzen" className="bg-background">
+      <section className="bg-background">
         <div className="mx-auto w-full max-w-6xl px-5 py-20 md:py-28">
           <Reveal>
             <div className="mb-12 flex flex-col gap-4 md:mb-16 md:flex-row md:items-end md:justify-between">

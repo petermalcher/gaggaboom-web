@@ -22,10 +22,10 @@ export default function Home() {
         <StackSection zIndex={20}>
           <Services />
         </StackSection>
-        <StackSection zIndex={30}>
+        <StackSection zIndex={30} anchorId="referenzen">
           <References />
         </StackSection>
-        <StackSection zIndex={40} drift={false}>
+        <StackSection zIndex={40} drift={false} anchorId="contact">
           <Footer />
         </StackSection>
       </main>

@@ -10,9 +10,9 @@ import { funken, site } from "@/lib/content";
 export function Footer() {
   return (
     <MotionConfig reducedMotion="user">
-      <footer id="contact" className="relative overflow-hidden bg-background">
+      <footer className="relative overflow-hidden bg-background">
         <div className="mx-auto flex min-h-[80svh] w-full max-w-6xl flex-col justify-between px-5 pb-6 pt-20 md:pt-28">
-          <Reveal>
+          <Reveal y={12}>
             <p className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.18em] text-foreground/90 md:text-sm">
               <span aria-hidden className="flex flex-col gap-[3px]">
                 <span className="h-0.5 w-6 bg-acid" />
@@ -23,7 +23,7 @@ export function Footer() {
           </Reveal>
 
           <div className="grid gap-10 py-14 md:grid-cols-[1.15fr_0.85fr] md:items-center md:gap-14 md:py-20">
-            <Reveal>
+            <Reveal y={12}>
               <div>
                 <a href={`mailto:${site.email}`} className="group block outline-none">
                   <span className="font-heading text-5xl font-medium uppercase leading-[1.02] tracking-tight transition-colors duration-300 group-hover:text-acid group-focus-visible:text-acid sm:text-6xl md:text-8xl">
@@ -42,13 +42,13 @@ export function Footer() {
             </Reveal>
 
             {/* Portrait — orangener Filter, Wordmark mittig darüber */}
-            <Reveal delay={0.1}>
+            <Reveal delay={0.1} y={12}>
               <figure className="relative w-full max-w-xs md:max-w-sm">
                 <div className="mb-6">
                   <p className="font-display text-3xl font-bold uppercase leading-[0.95] tracking-tight text-foreground md:text-4xl">
                     GAGGA<span className="text-acid">BOOM</span>
                   </p>
-                  <p className="mt-1 font-mono text-[0.95rem] uppercase leading-none tracking-[0.2em] text-muted-foreground md:text-sm">
+                  <p className="mt-0.5 font-mono text-[0.95rem] uppercase leading-none tracking-[0.2em] text-muted-foreground md:text-sm">
                     KERSTIN KLEINENBRANDS
                   </p>
                 </div>

@@ -25,11 +25,16 @@ export function StackSection({
   children,
   zIndex,
   drift = true,
+  anchorId,
 }: {
   children: ReactNode;
   zIndex: number;
   /** Disable for the last section (nothing covers it). */
   drift?: boolean;
+  /** Scroll-anchor id, placed on the in-flow sentinel so navigation lands
+   *  at the exact scroll position where this section reaches the top —
+   *  independent of the sticky pinning and drift transforms. */
+  anchorId?: string;
 }) {
   const sentinelRef = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLDivElement>(null);
@@ -93,7 +98,7 @@ export function StackSection({
 
   return (
     <>
-      <div ref={sentinelRef} aria-hidden />
+      <div ref={sentinelRef} id={anchorId} aria-hidden />
       <div
         ref={ref}
         className="sticky overflow-hidden bg-background"
