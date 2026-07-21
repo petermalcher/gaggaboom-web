@@ -54,12 +54,21 @@ function Explosion() {
       </motion.div>
 
       {/* Phase 2 — small explosion returns: grows in slowly like the first
-          burst, then the two stars keep spinning in opposite directions */}
+          burst, then keeps pulsing (bigger/smaller) while the two stars
+          spin in opposite directions */}
       <motion.div
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 2.15, duration: 1.6, ease: "easeOut" }}
+        animate={{ opacity: 1, scale: [0.92, 1.12, 0.92] }}
+        transition={{
+          opacity: { delay: 2.15, duration: 1.6, ease: "easeOut" },
+          scale: {
+            delay: 2.15,
+            duration: 6.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+          },
+        }}
       >
         <svg viewBox="-110 -110 220 220" className="size-[124.9vmin] max-w-none md:size-[47.25rem]">
           <motion.g
