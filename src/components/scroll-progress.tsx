@@ -27,7 +27,7 @@ export function ScrollProgress() {
     <motion.div
       aria-hidden
       style={{ scaleX, opacity }}
-      className="fixed inset-x-0 top-0 z-[60] h-1 origin-left bg-acid"
+      className="fixed inset-x-0 top-0 z-[60] h-1 origin-left bg-stage-bright"
     />
   );
 }
