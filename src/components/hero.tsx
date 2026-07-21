@@ -175,7 +175,11 @@ export function Hero() {
                   fill
                   preload
                   sizes="(max-width: 768px) 88vw, 440px"
-                  className="object-contain drop-shadow-[0_18px_50px_rgba(0,0,0,0.45)]"
+                  style={{
+                    filter:
+                      "sepia(0.35) saturate(1.35) hue-rotate(-18deg) brightness(1.1) drop-shadow(0 18px 50px rgba(0,0,0,0.45))",
+                  }}
+                  className="object-contain"
                 />
               </motion.div>
             </motion.div>
