@@ -87,14 +87,22 @@ export function StackSection({
     ease: EASE_OUT,
   });
 
-  // While being covered: fade the content out gradually …
-  const opacity = useTransform(scrollY, exitRange, drift ? [1, 0.15] : [1, 1], {
-    ease: EASE_OUT,
-  });
-  // … and darken it in step with the cover sliding over it.
-  const veilOpacity = useTransform(scrollY, exitRange, drift ? [0, 0.6] : [0, 0], {
-    ease: EASE_OUT,
-  });
+  // While being covered: stay fully visible until the covering section is
+  // ~50% of the way up, then fade the content out over the second half.
+  const fadeStart = exitRange[0] + (exitRange[1] - exitRange[0]) * 0.5;
+  const opacity = useTransform(
+    scrollY,
+    [exitRange[0], fadeStart, exitRange[1]],
+    drift ? [1, 1, 0.15] : [1, 1, 1],
+    { ease: EASE_OUT },
+  );
+  // … and darken it in step, also only over that second half.
+  const veilOpacity = useTransform(
+    scrollY,
+    [exitRange[0], fadeStart, exitRange[1]],
+    drift ? [0, 0, 0.4] : [0, 0, 0],
+    { ease: EASE_OUT },
+  );
 
   return (
     <>

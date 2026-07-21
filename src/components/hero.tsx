@@ -133,8 +133,8 @@ export function Hero() {
   // Fade out later and over a longer stretch, so the exit is softer.
   const fade = useTransform(scrollY, [vh * 0.15, vh], [1, 0]);
 
-  // Darken the hero gradually across the whole first viewport instead of
-  // a tight 50–75% window, so it dims smoothly rather than snapping black.
+  // Darken the hero gradually — start later and stretch the ramp well past
+  // the first viewport so it dims slowly rather than snapping black.
   const darkness = useTransform(scrollY, [vh * 0.35, vh], [0, 1]);
 
   return (
