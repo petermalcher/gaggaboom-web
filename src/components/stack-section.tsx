@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { motion, useScroll, useSpring, useTransform } from "motion/react";
+import { cubicBezier, motion, useScroll, useTransform } from "motion/react";
 import { useSvh } from "@/lib/use-svh";
+
+const EASE_OUT = cubicBezier(0.33, 1, 0.68, 1);
 
 /** Pins a section once it has been fully scrolled through, so the next
  *  sibling slides up over it — the cover effect from the hero.
@@ -17,7 +19,8 @@ import { useSvh } from "@/lib/use-svh";
  *    while pinned — that caused jumps when e.g. images finished loading).
  *  - The viewport height comes from a 100svh probe, which stays constant
  *    while the iOS browser chrome collapses/expands during scrolling.
- *  - The drift is wrapped in a spring, so corrections ease in smoothly. */
+ *  - The drift is coupled 1:1 to the scroll position (no spring lag), with
+ *    an ease-out curve on the transform so it feels smooth, not linear. */
 export function StackSection({
   children,
   zIndex,
@@ -72,19 +75,21 @@ export function StackSection({
 
   const { scrollY } = useScroll();
 
-  // Push the covered content up at ~45% of the scroll speed — springed,
-  // so range corrections (image loads, resizes) ease in instead of jumping.
-  const rawY = useTransform(scrollY, exitRange, [0, drift ? -svh * 0.45 : 0]);
-  const y = useSpring(rawY, { stiffness: 160, damping: 28, mass: 0.5 });
+  // Push the covered content up at ~40% of the scroll speed. Coupled 1:1 to
+  // the scroll (no spring → no lag / no overshoot), but eased so it starts
+  // gently and never snaps.
+  const y = useTransform(scrollY, exitRange, [0, drift ? -svh * 0.4 : 0], {
+    ease: EASE_OUT,
+  });
 
-  // While being covered: fade the content out slowly …
-  const opacity = useTransform(scrollY, exitRange, drift ? [1, 0] : [1, 1]);
-  // … and darken it right away (veil reaches full strength at 40% of the cover).
-  const veilOpacity = useTransform(
-    scrollY,
-    [exitRange[0], exitRange[0] + (exitRange[1] - exitRange[0]) * 0.4],
-    drift ? [0, 0.65] : [0, 0],
-  );
+  // While being covered: fade the content out gradually …
+  const opacity = useTransform(scrollY, exitRange, drift ? [1, 0.15] : [1, 1], {
+    ease: EASE_OUT,
+  });
+  // … and darken it in step with the cover sliding over it.
+  const veilOpacity = useTransform(scrollY, exitRange, drift ? [0, 0.6] : [0, 0], {
+    ease: EASE_OUT,
+  });
 
   return (
     <>
