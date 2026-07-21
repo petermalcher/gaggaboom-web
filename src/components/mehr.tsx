@@ -51,74 +51,46 @@ export function Mehr() {
               </p>
             </div>
 
-            {/* Bild — leicht gekippt, richtet sich beim Hover auf */}
-            <figure className="group relative w-full max-w-sm md:max-w-none">
-              <div className="relative aspect-square -rotate-2 overflow-hidden rounded-xl border border-border transition-all duration-500 group-hover:rotate-0 group-hover:border-acid/50">
+            {/* Bild — leicht gekippt, wird beim Scrollen farbig */}
+            <figure className="relative w-full max-w-sm md:max-w-none">
+              <motion.div
+                initial={{ filter: "grayscale(1)" }}
+                whileInView={{ filter: "grayscale(0)" }}
+                viewport={{ once: true, margin: "-25% 0px" }}
+                transition={{ duration: 0.9, ease: "easeOut" }}
+                className="relative aspect-square overflow-hidden rounded-xl border border-border"
+              >
                 <Image
                   src={about.photo.src}
                   alt={about.photo.alt}
                   fill
                   sizes="(max-width: 768px) 88vw, 420px"
-                  className="object-cover grayscale transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0"
+                  className="object-cover"
                 />
-                <div
+                <motion.div
                   aria-hidden
-                  className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-0"
+                  initial={{ opacity: 0.6 }}
+                  whileInView={{ opacity: 0 }}
+                  viewport={{ once: true, margin: "-25% 0px" }}
+                  transition={{ duration: 0.9, ease: "easeOut" }}
+                  className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"
                 />
-              </div>
+              </motion.div>
               <figcaption className="mt-4 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-foreground/60">
                 {about.photo.caption}
               </figcaption>
             </figure>
           </div>
 
-          {/* Statement & Body — nummerierte Editorial-Zeilen wie im Service-Index */}
-          <ul className="mt-16 md:mt-24">
-            <li className="group border-t border-border">
-              <div className="grid grid-cols-[auto_1fr] items-start gap-x-5 py-8 md:grid-cols-[5rem_1fr] md:gap-x-10 md:py-10">
-                <span
-                  aria-hidden
-                  className="font-display text-lg font-bold leading-none text-foreground/25 transition-colors duration-300 group-hover:text-acid md:text-2xl"
-                >
-                  01
-                </span>
-                <div className="min-w-0">
-                  <p className="max-w-3xl font-heading text-2xl font-medium leading-snug tracking-tight transition-colors duration-300 group-hover:text-acid md:text-4xl">
-                    {about.statement}
-                  </p>
-                  <span
-                    aria-hidden
-                    className="mt-5 flex w-fit flex-col gap-[3px] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                  >
-                    <span className="h-0.5 w-10 bg-acid" />
-                    <span className="h-0.5 w-10 bg-stage-bright" />
-                  </span>
-                </div>
-              </div>
-            </li>
-            <li className="group border-t border-border last:border-b">
-              <div className="grid grid-cols-[auto_1fr] items-start gap-x-5 py-8 md:grid-cols-[5rem_1fr] md:gap-x-10 md:py-10">
-                <span
-                  aria-hidden
-                  className="font-display text-lg font-bold leading-none text-foreground/25 transition-colors duration-300 group-hover:text-acid md:text-2xl"
-                >
-                  02
-                </span>
-                <div className="min-w-0">
-                  <p className="max-w-3xl text-base leading-relaxed text-foreground/70 md:text-lg">
-                    {about.body}
-                  </p>
-                  <span
-                    aria-hidden
-                    className="mt-5 flex w-fit flex-col gap-[3px] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                  >
-                    <span className="h-0.5 w-10 bg-acid" />
-                    <span className="h-0.5 w-10 bg-stage-bright" />
-                  </span>
-                </div>
-              </div>
-            </li>
-          </ul>
+          {/* Statement & Body — artikelartig: Überschrift, Trennstrich, Fließtext */}
+          <div className="mt-16 md:mt-24">
+            <h3 className="border-b border-white pb-4 font-mono text-lg font-semibold uppercase leading-snug tracking-[0.14em] text-acid sm:text-xl md:pb-5 md:text-2xl">
+              {about.statement}
+            </h3>
+            <p className="mt-4 max-w-3xl font-mono text-sm leading-relaxed tracking-[0.06em] text-white md:mt-5 md:text-base">
+              {about.body}
+            </p>
+          </div>
         </motion.div>
       </section>
     </MotionConfig>

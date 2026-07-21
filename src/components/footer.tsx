@@ -41,28 +41,36 @@ export function Footer() {
               </div>
             </Reveal>
 
-            {/* Portrait — orangener Filter, leicht gekippt wie die anderen Bilder */}
+            {/* Portrait — orangener Filter, Wordmark mittig darüber */}
             <Reveal delay={0.1}>
-              <figure className="group relative mx-auto w-full max-w-xs md:max-w-sm">
-                <div className="relative aspect-[4/5] rotate-2 overflow-hidden rounded-xl border border-border transition-all duration-500 group-hover:rotate-0 group-hover:border-acid/50">
+              <figure className="relative w-full max-w-xs md:max-w-sm">
+                <div className="mb-6">
+                  <p className="font-display text-3xl font-bold uppercase leading-[0.95] tracking-tight text-foreground md:text-4xl">
+                    GAGGABOOM
+                  </p>
+                  <p className="mt-1 font-mono text-[0.95rem] uppercase leading-none tracking-[0.2em] text-muted-foreground md:text-sm">
+                    KERSTIN KLEINENBRANDS
+                  </p>
+                </div>
+                <div className="relative aspect-[4/5] overflow-hidden rounded-xl border border-border">
                   <Image
                     src="/images/kontakt-portrait.jpg"
                     alt="Kerstin Kleinenbrands — Schwarzweiß-Portrait mit INSIDE-Schriftzug"
                     fill
                     sizes="(max-width: 768px) 88vw, 380px"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="object-cover"
                   />
                   {/* Orangener Duotone-Filter */}
                   <div
                     aria-hidden
-                    className="absolute inset-0 bg-stage-bright mix-blend-multiply transition-opacity duration-500 group-hover:opacity-60"
+                    className="absolute inset-0 bg-stage-bright mix-blend-multiply"
                   />
                 </div>
               </figure>
             </Reveal>
           </div>
 
-          <div className="flex flex-wrap items-end justify-between gap-6 border-t border-border pt-6 font-mono text-xs uppercase leading-relaxed tracking-[0.12em] text-foreground/80 md:text-sm">
+          <div className="flex flex-wrap items-end justify-between gap-6 border-t border-white pt-6 font-mono text-xs uppercase leading-relaxed tracking-[0.12em] text-foreground/80 md:text-sm">
             <p>
               Tel: auf Anfrage
               <br />

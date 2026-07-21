@@ -24,13 +24,13 @@ export function Navbar() {
   const { scrollY } = useScroll();
   const rawOpacity = useTransform(
     scrollY,
-    [viewportHeight * 0.5, viewportHeight * 0.7],
+    [viewportHeight * 0.1, viewportHeight * 0.25],
     [0, 1],
     { clamp: true },
   );
   const rawY = useTransform(
     scrollY,
-    [viewportHeight * 0.5, viewportHeight * 0.7],
+    [viewportHeight * 0.1, viewportHeight * 0.25],
     [-16, 0],
     { clamp: true },
   );

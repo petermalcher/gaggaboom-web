@@ -19,25 +19,17 @@ const GRID_CLASS: Record<Cluster["ratio"], string> = {
 
 function ClusterBlock({ cluster }: { cluster: Cluster }) {
   return (
-    <div className="group/cluster border-t border-border py-10 last:border-b md:py-14">
+    <div className="group/cluster py-10 md:py-14">
       <Reveal>
-        <div className="grid grid-cols-[auto_1fr] items-start gap-x-5 md:grid-cols-[5rem_1fr] md:gap-x-10">
-          {/* Doppelstrich statt Nummer */}
-          <span aria-hidden className="mt-2 flex flex-col gap-[3px] md:mt-3">
-            <span className="h-0.5 w-6 bg-acid md:w-10" />
-            <span className="h-0.5 w-6 bg-stage-bright md:w-10" />
-          </span>
-
-          <div className="min-w-0">
-            <p className="font-heading text-2xl font-medium uppercase leading-[1.05] tracking-tight transition-colors duration-300 group-hover/cluster:text-acid sm:text-3xl md:text-4xl">
-              {cluster.label}
+        <div className="min-w-0">
+          <p className="border-b border-white pb-4 font-mono text-lg font-semibold uppercase leading-snug tracking-[0.14em] text-acid sm:text-xl md:pb-5 md:text-2xl">
+            {cluster.label}
+          </p>
+          {cluster.desc && (
+            <p className="mt-4 max-w-xl font-mono text-sm leading-relaxed tracking-[0.06em] text-white md:mt-5 md:text-base">
+              {cluster.desc}
             </p>
-            {cluster.desc && (
-              <p className="mt-3 max-w-xl text-base leading-relaxed text-foreground/70">
-                {cluster.desc}
-              </p>
-            )}
-          </div>
+          )}
         </div>
       </Reveal>
 
@@ -46,9 +38,9 @@ function ClusterBlock({ cluster }: { cluster: Cluster }) {
         whileInView="show"
         viewport={{ once: true, margin: "-60px" }}
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06 } } }}
-        className={`mt-8 grid gap-2.5 md:gap-3 ${GRID_CLASS[cluster.ratio]} md:ml-[7.5rem]`}
+        className={`mt-8 grid gap-2.5 md:gap-3 ${GRID_CLASS[cluster.ratio]}`}
       >
-        {cluster.items.map((item, i) => (
+        {cluster.items.map((item) => (
           <motion.li
             key={item.src}
             variants={{
@@ -67,27 +59,25 @@ function ClusterBlock({ cluster }: { cluster: Cluster }) {
               rel="noopener noreferrer"
               className="group block outline-none"
             >
-              <span
-                className={`relative block overflow-hidden rounded-xl border border-border transition-all duration-500 group-hover:rotate-0 group-hover:border-acid/50 group-focus-visible:ring-2 group-focus-visible:ring-ring ${
-                  i % 2 === 0 ? "rotate-1" : "-rotate-1"
-                } ${RATIO_CLASS[cluster.ratio]}`}
+              <motion.span
+                initial={{ filter: "grayscale(1)" }}
+                whileInView={{ filter: "grayscale(0)" }}
+                viewport={{ once: true, margin: "-25% 0px" }}
+                transition={{ duration: 0.9, ease: "easeOut" }}
+                className={`relative block overflow-hidden rounded-xl border border-border group-focus-visible:ring-2 group-focus-visible:ring-ring ${RATIO_CLASS[cluster.ratio]}`}
               >
                 <Image
                   src={item.src}
                   alt={item.alt}
                   fill
                   sizes="(max-width: 768px) 50vw, 280px"
-                  className="object-cover grayscale transition-all duration-500 ease-out group-hover:scale-[1.06] group-hover:grayscale-0"
-                />
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-0 md:block"
+                  className="object-cover"
                 />
                 {/* Desktop: caption as hover overlay */}
                 <span className="pointer-events-none absolute inset-x-0 bottom-0 hidden bg-gradient-to-t from-black/75 to-transparent px-3 pb-3 pt-10 font-mono text-xs font-semibold uppercase leading-snug tracking-[0.1em] text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block">
                   {item.caption}
                 </span>
-              </span>
+              </motion.span>
               {/* Mobile: caption below the tile, always readable */}
               <span className="mt-2 block font-mono text-xs uppercase leading-snug tracking-[0.08em] text-foreground/85 [overflow-wrap:anywhere] md:hidden">
                 {item.caption}

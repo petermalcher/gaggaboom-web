@@ -24,7 +24,7 @@ export function ScrollProgress() {
 
   const rawOpacity = useTransform(
     scrollY,
-    [viewportHeight * 0.5, viewportHeight * 0.7],
+    [viewportHeight * 0.1, viewportHeight * 0.25],
     [0, 1],
     { clamp: true },
   );

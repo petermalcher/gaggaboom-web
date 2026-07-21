@@ -36,54 +36,48 @@ export function Services() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-                className="group border-t border-border last:border-b"
+                className="group"
               >
-                <div className="grid grid-cols-[auto_1fr] items-start gap-x-5 gap-y-6 py-8 md:grid-cols-[5rem_1fr_15rem] md:items-center md:gap-x-10 md:py-10">
-                  {/* Index */}
-                  <span
-                    aria-hidden
-                    className="font-display text-lg font-bold leading-none text-foreground/25 transition-colors duration-300 group-hover:text-acid md:text-2xl"
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-
-                  {/* Copy */}
+                <div className="grid gap-y-6 py-8 md:grid-cols-[15rem_1fr] md:items-center md:gap-x-10 md:py-10">
+                  {/* Copy — Trennstrich zwischen Überschrift und Text */}
                   <div className="min-w-0">
-                    <h3 className="font-heading text-2xl font-medium uppercase leading-[1.05] tracking-tight transition-colors duration-300 group-hover:text-acid sm:text-3xl md:text-5xl">
+                    <h3 className="border-b border-white pb-4 font-mono text-lg font-semibold uppercase leading-snug tracking-[0.14em] text-acid sm:text-xl md:pb-5 md:text-2xl">
                       {item.title}
                     </h3>
-                    <p className="mt-3 max-w-xl text-base leading-relaxed text-foreground/70 md:text-lg">
+                    <p className="mt-4 max-w-xl font-mono text-sm leading-relaxed tracking-[0.06em] text-white md:mt-5 md:text-base">
                       {item.body}
                     </p>
-                    <span
-                      aria-hidden
-                      className="mt-5 flex w-fit flex-col gap-[3px] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                    >
-                      <span className="h-0.5 w-10 bg-acid" />
-                      <span className="h-0.5 w-10 bg-stage-bright" />
-                    </span>
                   </div>
 
-                  {/* Bild — leicht gekippt, richtet sich beim Hover auf */}
-                  <div className="col-span-2 md:col-span-1">
+                  {/* Bild — links, quadratischer Ausschnitt wie in der Sektion darüber */}
+                  <motion.div
+                    initial={{ filter: "grayscale(1)" }}
+                    whileInView={{ filter: "grayscale(0)" }}
+                    viewport={{ once: true, margin: "-25% 0px" }}
+                    transition={{ duration: 0.9, ease: "easeOut" }}
+                    className="relative aspect-square w-full max-w-sm overflow-hidden rounded-xl border border-border md:order-first md:max-w-none"
+                  >
+                    <Image
+                      src={item.image.src}
+                      alt={item.image.alt}
+                      fill
+                      sizes="(max-width: 768px) 90vw, 240px"
+                      className="object-cover"
+                    />
+                    <motion.div
+                      aria-hidden
+                      initial={{ opacity: 0.6 }}
+                      whileInView={{ opacity: 0 }}
+                      viewport={{ once: true, margin: "-25% 0px" }}
+                      transition={{ duration: 0.9, ease: "easeOut" }}
+                      className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"
+                    />
+                    {/* Leichter Orange-Filter */}
                     <div
-                      className={`relative aspect-[4/3] overflow-hidden rounded-xl border border-border transition-all duration-500 group-hover:rotate-0 group-hover:border-acid/50 md:aspect-[4/5] ${
-                        i % 2 === 0 ? "rotate-2" : "-rotate-2"
-                      }`}
-                    >
-                      <Image
-                        src={item.image.src}
-                        alt={item.image.alt}
-                        fill
-                        sizes="(max-width: 768px) 90vw, 240px"
-                        className="object-cover grayscale transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0"
-                      />
-                      <div
-                        aria-hidden
-                        className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60 transition-opacity duration-500 group-hover:opacity-0"
-                      />
-                    </div>
-                  </div>
+                      aria-hidden
+                      className="absolute inset-0 bg-stage-bright/40 mix-blend-multiply"
+                    />
+                  </motion.div>
                 </div>
               </motion.li>
             ))}

@@ -22,11 +22,13 @@ export default function Home() {
         <StackSection zIndex={20}>
           <Services />
         </StackSection>
-        <StackSection zIndex={30} drift={false}>
+        <StackSection zIndex={30}>
           <References />
         </StackSection>
+        <StackSection zIndex={40} drift={false}>
+          <Footer />
+        </StackSection>
       </main>
-      <Footer />
     </>
   );
 }

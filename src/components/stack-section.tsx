@@ -7,8 +7,8 @@ import { motion, useScroll, useTransform } from "motion/react";
  *  sibling slides up over it — the cover effect from the hero.
  *
  *  The covered section is not fully static: while the next section slides
- *  over, its content keeps drifting upward at partial scroll speed, so it
- *  gets pushed up as well instead of being completely overlapped.
+ *  over, its content keeps drifting upward at partial scroll speed and
+ *  slowly fades out, so it gets pushed away instead of being hard-covered.
  *
  *  Sections taller than the viewport pin with their bottom edge at the
  *  bottom of the viewport (top offset becomes negative). */
@@ -64,13 +64,31 @@ export function StackSection({
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, exitRange, [0, driftPx]);
 
+  // While being covered: fade the content out slowly …
+  const opacity = useTransform(
+    scrollY,
+    exitRange,
+    driftPx !== 0 ? [1, 0] : [1, 1],
+  );
+  // … and darken it right away (veil reaches full strength at 40% of the cover).
+  const veilOpacity = useTransform(
+    scrollY,
+    [exitRange[0], exitRange[0] + (exitRange[1] - exitRange[0]) * 0.4],
+    driftPx !== 0 ? [0, 0.65] : [0, 0],
+  );
+
   return (
     <div
       ref={ref}
       className="sticky overflow-hidden bg-background"
       style={{ top, zIndex }}
     >
-      <motion.div style={{ y }}>{children}</motion.div>
+      <motion.div style={{ y, opacity }}>{children}</motion.div>
+      <motion.div
+        aria-hidden
+        style={{ opacity: veilOpacity }}
+        className="pointer-events-none absolute inset-0 bg-black"
+      />
     </div>
   );
 }
