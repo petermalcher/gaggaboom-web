@@ -10,12 +10,13 @@
   --font-sans: var(--font-inter);
   --font-mono: var(--font-mono-code);
   --font-heading: var(--font-clash);
+  --font-display: var(--font-unbounded);
 
-  /* Brand tokens */
-  --color-fire: var(--fire);
-  --color-fire-glow: var(--fire-glow);
-  --color-ember: var(--ember);
-  --color-ash: var(--ash);
+  /* Brand tokens — stage green world */
+  --color-stage: var(--stage);
+  --color-stage-deep: var(--stage-deep);
+  --color-stage-bright: var(--stage-bright);
+  --color-acid: var(--acid);
   --color-boom-black: var(--boom-black);
   --color-boom-surface: var(--boom-surface);
 
@@ -57,15 +58,16 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* Gaggaboom — permanent dark "fire on black" theme.
-   Brand accent = feuriges Orange. Everything else quiet. */
+/* Gaggaboom — fiery stage world.
+   Orange stage light on the backgrounds, golden-yellow for type. */
 :root {
-  --boom-black: oklch(0.16 0.008 40);
-  --boom-surface: oklch(0.2 0.01 40);
-  --fire: oklch(0.68 0.2 42);
-  --fire-glow: oklch(0.74 0.19 48);
-  --ember: oklch(0.82 0.11 55);
-  --ash: oklch(0.72 0.01 60);
+  --boom-black: oklch(0.13 0.012 40);
+  --boom-surface: oklch(0.17 0.015 40);
+  /* lighter orange — used only for background glows */
+  --stage-deep: oklch(0.42 0.11 45);
+  --stage: oklch(0.64 0.17 48);
+  --stage-bright: oklch(0.78 0.19 52);
+  --acid: oklch(0.9 0.18 100);
 
   --background: var(--boom-black);
   --foreground: oklch(0.97 0.006 60);
@@ -73,32 +75,32 @@
   --card-foreground: oklch(0.97 0.006 60);
   --popover: var(--boom-surface);
   --popover-foreground: oklch(0.97 0.006 60);
-  --primary: var(--fire);
-  --primary-foreground: oklch(0.17 0.01 40);
-  --secondary: oklch(0.26 0.012 40);
+  --primary: var(--stage-bright);
+  --primary-foreground: oklch(0.15 0.02 42);
+  --secondary: oklch(0.23 0.02 42);
   --secondary-foreground: oklch(0.97 0.006 60);
-  --muted: oklch(0.24 0.01 40);
-  --muted-foreground: oklch(0.72 0.012 55);
-  --accent: oklch(0.28 0.02 42);
+  --muted: oklch(0.21 0.015 42);
+  --muted-foreground: oklch(0.7 0.02 50);
+  --accent: oklch(0.26 0.03 42);
   --accent-foreground: oklch(0.97 0.006 60);
   --destructive: oklch(0.62 0.23 25);
-  --border: oklch(0.32 0.015 45 / 55%);
-  --input: oklch(0.32 0.015 45 / 45%);
-  --ring: var(--fire);
-  --chart-1: var(--fire);
-  --chart-2: var(--ember);
-  --chart-3: oklch(0.6 0.14 40);
-  --chart-4: oklch(0.5 0.1 40);
-  --chart-5: oklch(0.4 0.06 40);
+  --border: oklch(0.34 0.03 45 / 45%);
+  --input: oklch(0.34 0.03 45 / 40%);
+  --ring: var(--acid);
+  --chart-1: var(--stage-bright);
+  --chart-2: var(--acid);
+  --chart-3: var(--stage);
+  --chart-4: var(--stage-deep);
+  --chart-5: oklch(0.4 0.05 42);
   --radius: 0.9rem;
   --sidebar: var(--boom-surface);
   --sidebar-foreground: oklch(0.97 0.006 60);
-  --sidebar-primary: var(--fire);
-  --sidebar-primary-foreground: oklch(0.17 0.01 40);
-  --sidebar-accent: oklch(0.28 0.02 42);
+  --sidebar-primary: var(--stage-bright);
+  --sidebar-primary-foreground: oklch(0.15 0.02 42);
+  --sidebar-accent: oklch(0.26 0.03 42);
   --sidebar-accent-foreground: oklch(0.97 0.006 60);
-  --sidebar-border: oklch(0.32 0.015 45 / 55%);
-  --sidebar-ring: var(--fire);
+  --sidebar-border: oklch(0.34 0.03 45 / 45%);
+  --sidebar-ring: var(--acid);
 }
 
 @layer base {
@@ -115,7 +117,7 @@
     overflow-x: hidden;
   }
   ::selection {
-    background: var(--fire);
+    background: var(--stage-bright);
     color: var(--primary-foreground);
   }
   h1, h2, h3, .font-heading {
@@ -124,27 +126,24 @@
 }
 
 @layer utilities {
-  /* Glowing fire text */
-  .text-glow {
-    text-shadow:
-      0 0 18px oklch(0.68 0.2 42 / 0.55),
-      0 0 42px oklch(0.68 0.2 42 / 0.25);
-  }
-  /* Fire-lit ring around a framed element */
-  .ring-fire {
-    box-shadow:
-      0 0 0 1px oklch(0.68 0.2 42 / 0.6),
-      0 0 22px oklch(0.68 0.2 42 / 0.35),
-      0 0 60px oklch(0.68 0.2 42 / 0.18);
-  }
-  /* Ambient background ember glow */
-  .ember-radial {
+  /* The green stage light — hero & footer */
+  .stage-radial {
     background:
-      radial-gradient(60% 55% at 70% 12%, oklch(0.68 0.2 42 / 0.16), transparent 70%);
+      radial-gradient(
+        116% 80% at 50% 44%,
+        var(--stage) 0%,
+        var(--stage-deep) 52%,
+        transparent 78%
+      );
   }
-  .grain {
-    background-image: radial-gradient(oklch(1 0 0 / 0.035) 1px, transparent 1px);
-    background-size: 3px 3px;
+  .stage-radial-bottom {
+    background:
+      radial-gradient(
+        110% 75% at 50% 108%,
+        var(--stage) 0%,
+        var(--stage-deep) 55%,
+        transparent 82%
+      );
   }
 }
 

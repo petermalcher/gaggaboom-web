@@ -1,25 +1,30 @@
+import { ScrollProgress } from "@/components/scroll-progress";
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
-import { About } from "@/components/about";
+import { Mehr } from "@/components/mehr";
 import { Services } from "@/components/services";
-import { Work } from "@/components/work";
-import { Stats } from "@/components/stats";
-import { Contact } from "@/components/contact";
+import { References } from "@/components/references";
 import { Footer } from "@/components/footer";
-import { MicThread } from "@/components/mic-thread";
+import { StackSection } from "@/components/stack-section";
 
 export default function Home() {
   return (
     <>
+      <ScrollProgress />
       <Navbar />
-      <MicThread />
       <main className="flex-1">
         <Hero />
-        <About />
-        <Services />
-        <Work />
-        <Stats />
-        <Contact />
+        {/* Each section pins once scrolled through — the next one
+            slides up and covers it, like the hero cover effect. */}
+        <StackSection zIndex={10}>
+          <Mehr />
+        </StackSection>
+        <StackSection zIndex={20}>
+          <Services />
+        </StackSection>
+        <StackSection zIndex={30} drift={false}>
+          <References />
+        </StackSection>
       </main>
       <Footer />
     </>

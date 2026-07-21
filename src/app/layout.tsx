@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Unbounded } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -22,14 +22,20 @@ const clash = localFont({
   display: "swap",
 });
 
+const unbounded = Unbounded({
+  variable: "--font-unbounded",
+  subsets: ["latin"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://gaggaboom.de"),
   title: {
-    default: "Gaggaboom — Kreative Allzweckwaffe & Content Creation",
+    default: "Gaggaboom — Moderation, Reels & Vodcast aus Köln",
     template: "%s · Gaggaboom",
   },
   description:
-    "Gaggaboom ist die kreative Allzweckwaffe von Kerstin Kleinenbrands: Live-Moderation, Reels, Vodcasts und Interviews — authentisch, humorvoll, mittendrin. Köln & überall wo's kracht.",
+    "Gaggaboom ist Kerstin Kleinenbrands: Moderatorin und Content-Creatorin aus Köln. Keine Skripte, keine Steifheit — Moderation, Reels, Vodcasts und Interviews, von der Formatidee bis zum fertigen Clip.",
   keywords: [
     "Gaggaboom",
     "Kerstin Kleinenbrands",
@@ -41,9 +47,9 @@ export const metadata: Metadata = {
     "Köln",
   ],
   openGraph: {
-    title: "Gaggaboom — Kreative Allzweckwaffe & Content Creation",
+    title: "Gaggaboom — Moderation, Reels & Vodcast aus Köln",
     description:
-      "Live-Moderation, Reels, Vodcasts und Interviews — authentisch, humorvoll, mittendrin.",
+      "Keine Skripte, keine Steifheit — Moderation, Reels, Vodcasts und Interviews mit Kerstin Kleinenbrands.",
     type: "website",
     locale: "de_DE",
   },
@@ -58,7 +64,7 @@ export default function RootLayout({
   return (
     <html
       lang="de"
-      className={`${inter.variable} ${jetbrainsMono.variable} ${clash.variable} h-full antialiased`}
+      className={`${inter.variable} ${jetbrainsMono.variable} ${clash.variable} ${unbounded.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

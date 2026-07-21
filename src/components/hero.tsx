@@ -1,142 +1,273 @@
 "use client";
 
-import { useRef } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
-import { Button } from "@/components/ui/button";
-import { site } from "@/lib/content";
+import { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  MotionConfig,
+  useMotionValue,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "motion/react";
+import { hero, site } from "@/lib/content";
+
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+/** Deterministic comic starburst points (no randomness → no hydration drift). */
+function starPoints(spikes: number, radii: number[], inner: number): string {
+  const pts: string[] = [];
+  for (let i = 0; i < spikes * 2; i++) {
+    const r = i % 2 === 0 ? radii[(i / 2) % radii.length] : inner;
+    const a = (Math.PI * i) / spikes - Math.PI / 2;
+    pts.push(`${(Math.cos(a) * r).toFixed(1)},${(Math.sin(a) * r).toFixed(1)}`);
+  }
+  return pts.join(" ");
+}
+
+const OUTER = starPoints(14, [104, 88, 97, 84, 100, 90, 94], 46);
+const INNER = starPoints(10, [66, 56, 62, 53, 60], 30);
+// Bigger yellow star for the small returning explosion, spins counter to the orange one.
+const INNER_BIG = starPoints(10, [89, 76, 84, 72, 81], 41);
+
+/** The boom — a comic explosion bursting behind the figure,
+ *  straight out of the Gaggaboom logo. */
+function Explosion() {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute left-1/2 top-[38%] -z-10 translate-x-[calc(-50%+22px)] translate-y-[calc(-50%+25px)] md:top-[40%]"
+    >
+      {/* Phase 1 — the big burst: pop in, then vanish */}
+      <motion.div
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        initial={{ scale: 0, rotate: -25, opacity: 0 }}
+        animate={{ scale: [0, 1.15, 1.35], rotate: [-25, 0, 18], opacity: [0, 1, 0] }}
+        transition={{ delay: 0.55, duration: 1.6, times: [0, 0.35, 1], ease: "easeOut" }}
+      >
+        <svg viewBox="-110 -110 220 220" className="size-[120vmin] max-w-none md:size-[46rem]">
+          <polygon points={OUTER} fill="var(--stage-bright)" />
+          <polygon points={INNER} fill="var(--acid)" />
+        </svg>
+      </motion.div>
+
+      {/* Phase 2 — small explosion returns: grows in slowly like the first
+          burst, then the two stars keep spinning in opposite directions */}
+      <motion.div
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 2.15, duration: 1.6, ease: "easeOut" }}
+      >
+        <svg viewBox="-110 -110 220 220" className="size-[124.9vmin] max-w-none md:size-[47.25rem]">
+          <motion.g
+            initial={{ rotate: 20 }}
+            animate={{ rotate: 380, opacity: [0.75, 1, 0.75] }}
+            transition={{
+              rotate: { delay: 2.15, duration: 42, ease: "linear", repeat: Infinity },
+              opacity: { delay: 2.15, duration: 5.5, repeat: Infinity, ease: "easeInOut" },
+            }}
+          >
+            <polygon points={OUTER} fill="var(--stage-bright)" />
+          </motion.g>
+          <motion.g
+            initial={{ rotate: -20 }}
+            animate={{ rotate: -380, opacity: [0.75, 1, 0.75] }}
+            transition={{
+              rotate: { delay: 2.15, duration: 42, ease: "linear", repeat: Infinity },
+              opacity: { delay: 2.15, duration: 5.5, repeat: Infinity, ease: "easeInOut" },
+            }}
+          >
+            <polygon points={INNER_BIG} fill="var(--acid)" />
+          </motion.g>
+        </svg>
+      </motion.div>
+    </div>
+  );
+}
 
 export function Hero() {
-  const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Pointer parallax — the figure leans toward the cursor.
+  const mx = useMotionValue(0.5);
+  const my = useMotionValue(0.5);
+  const rotateX = useSpring(useTransform(my, [0, 1], [6, -6]), {
+    stiffness: 110,
+    damping: 15,
+  });
+  const rotateY = useSpring(useTransform(mx, [0, 1], [-8, 8]), {
+    stiffness: 110,
+    damping: 15,
   });
 
-  // Parallax depths — background moves least, foreground most.
-  const yPhoto = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 120]);
-  const yLogo = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -80]);
-  const yGlow = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 60]);
-  const yWord = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 200]);
-  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  function onPointerMove(e: React.PointerEvent) {
+    if (reduce) return;
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    mx.set((e.clientX - rect.left) / rect.width);
+    my.set((e.clientY - rect.top) / rect.height);
+  }
+
+  // Scroll-out parallax — bound to the global scroll position relative to
+  // the viewport height (robust: no target-based re-measuring, no resets).
+  const [vh, setVh] = useState(1);
+  useEffect(() => {
+    const update = () => setVh(Math.max(window.innerHeight, 1));
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const { scrollY } = useScroll();
+  const imgScrollY = useTransform(scrollY, [0, vh], [0, reduce ? 0 : -60]);
+  const wordScrollY = useTransform(scrollY, [0, vh], [0, reduce ? 0 : 110]);
+  const glowScrollY = useTransform(scrollY, [0, vh], [0, reduce ? 0 : 40]);
+  const fade = useTransform(scrollY, [0, vh * 0.7], [1, 0]);
+
+  // From 50% scrolled, darken the whole hero in lockstep with the
+  // scroll — fully black already at 75% of the viewport height.
+  const darkness = useTransform(scrollY, [vh * 0.5, vh * 0.75], [0, 1]);
 
   return (
-    <section
-      ref={ref}
-      id="top"
-      className="ember-radial relative flex min-h-[100svh] items-center overflow-hidden pt-24"
-    >
-      {/* Ambient glow blob, parallaxed */}
-      <motion.div
-        aria-hidden
-        style={{ y: yGlow }}
-        className="pointer-events-none absolute -right-24 top-10 size-[520px] rounded-full bg-fire/20 blur-[120px]"
-      />
-      <div aria-hidden className="grain pointer-events-none absolute inset-0 opacity-60" />
-
-      {/* Oversized ghost word behind everything */}
-      <motion.span
-        aria-hidden
-        style={{ y: yWord, opacity }}
-        className="pointer-events-none absolute -left-4 bottom-4 select-none font-heading text-[26vw] font-bold leading-none tracking-tighter text-fire/[0.06] md:bottom-10 md:text-[18vw]"
+    <MotionConfig reducedMotion="user">
+      <section
+        ref={sectionRef}
+        id="top"
+        onPointerMove={onPointerMove}
+        className="sticky top-0 flex min-h-[100svh] flex-col items-center justify-center overflow-hidden"
       >
-        BOOM
-      </motion.span>
-
-      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-10 px-5 md:grid-cols-2 md:px-8">
-        {/* Left — copy */}
+        {/* Stage light — drifts slowest (parallax back layer), pulsing in intensity only */}
         <motion.div
-          style={{ opacity }}
-          initial={reduce ? false : { opacity: 0, y: 24 }}
-          animate={reduce ? undefined : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="z-10"
-        >
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-fire/40 bg-fire/10 px-3.5 py-1.5">
-            <span className="size-1.5 animate-pulse rounded-full bg-fire" />
-            <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-ember">
-              {site.tagline}
-            </span>
-          </div>
+          aria-hidden
+          style={{ y: glowScrollY }}
+          animate={{ opacity: [0.72, 0.8, 0.72] }}
+          transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+          className="stage-radial absolute inset-0"
+        />
 
-          <h1 className="font-heading text-6xl font-bold leading-[0.95] tracking-tight sm:text-7xl md:text-[5.5rem]">
-            Immer
-            <span className="text-fire text-glow">.</span>
-            <br />
-            Mitten
-            <br />
-            <span className="text-fire text-glow">drin.</span>
-          </h1>
-
-          <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground">
-            Ob backstage auf dem Festival, im Getümmel, als rasende Reporterin
-            auf dem Moped oder im Vodcast-Studio — {site.brand} ist da, wo was
-            passiert. Authentisch, humorvoll, professionell.
-          </p>
-
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild size="lg">
-              <a href="#contact">Zusammenarbeiten</a>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <a href="#work">Einblicke ansehen</a>
-            </Button>
-          </div>
+        {/* Fisheye figure — appears first, explosion pops behind it */}
+        <motion.div style={{ y: imgScrollY }} className="relative z-10">
+          <Explosion />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.88, y: 26 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1, ease: EASE }}
+          >
+            <motion.div
+              animate={{ y: [0, -12, 0] }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 2.6,
+              }}
+            >
+              <motion.div
+                style={{
+                  rotateX,
+                  rotateY,
+                  transformPerspective: 900,
+                  aspectRatio: "923 / 1152",
+                }}
+                className="relative h-[min(54svh,32rem)] w-auto max-w-[88vw]"
+              >
+                <Image
+                  src="/images/kerstin-fisheye.png"
+                  alt="Kerstin Kleinenbrands schaut von oben in die Fisheye-Kamera und hält ein Puschel-Mikrofon"
+                  fill
+                  preload
+                  sizes="(max-width: 768px) 88vw, 440px"
+                  className="object-contain drop-shadow-[0_18px_50px_rgba(0,0,0,0.45)]"
+                />
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </motion.div>
 
-        {/* Right — parallax photo + logo */}
-        <div className="relative mx-auto h-[440px] w-full max-w-sm md:h-[560px]">
-          <motion.div
-            style={{ y: yPhoto }}
-            initial={reduce ? false : { opacity: 0, scale: 0.96, rotate: -3 }}
-            animate={reduce ? undefined : { opacity: 1, scale: 1, rotate: -2 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-            className="ring-fire absolute inset-x-4 top-6 aspect-[3/4] overflow-hidden rounded-3xl"
+        {/* Wordmark — laid over the lower part of the figure,
+            drifts faster than the photo (parallax front layer) */}
+        <motion.div style={{ y: wordScrollY, opacity: fade }} className="z-20 w-full">
+          <h1
+            aria-label={hero.title}
+            className="-mt-[8vw] flex w-full items-baseline justify-center px-3 font-display text-[clamp(2.7rem,10.8vw,9rem)] font-bold uppercase leading-[0.95] tracking-tight md:-mt-16"
           >
-            <Image
-              src="/images/kerstin-hero.png"
-              alt="Kerstin Kleinenbrands mit Mikrofon im Einsatz"
-              fill
-              priority
-              sizes="(max-width: 768px) 90vw, 420px"
-              className="object-cover object-[center_20%]"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
-          </motion.div>
+            {hero.title.split("").map((letter, i) => (
+              <motion.span
+                key={i}
+                aria-hidden
+                initial={{ y: "0.6em", opacity: 0, rotate: 10 }}
+                animate={{ y: 0, opacity: 1, rotate: 0 }}
+                transition={{
+                  delay: 0.5 + i * 0.055,
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 22,
+                }}
+                className={`inline-block select-none [text-shadow:0_6px_40px_rgba(0,0,0,0.55)] ${
+                  i >= 5 ? "text-acid" : ""
+                }`}
+              >
+                {letter}
+              </motion.span>
+            ))}
+          </h1>
 
-          {/* Floating Gaggaboom logo badge */}
+          {/* Tagline — words appear one after another */}
+          <p className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 font-mono text-sm uppercase tracking-[0.28em] text-foreground/90 md:mt-6 md:text-lg">
+            {site.tagline.split(" · ").map((word, i, arr) => (
+              <span key={word} className="inline-flex items-center gap-3">
+                <motion.span
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.15 + i * 0.4, duration: 0.5, ease: EASE }}
+                >
+                  {word}
+                </motion.span>
+                {i < arr.length - 1 && (
+                  <motion.span
+                    aria-hidden
+                    className="text-acid"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.35 + i * 0.4, duration: 0.4 }}
+                  >
+                    ·
+                  </motion.span>
+                )}
+              </span>
+            ))}
+          </p>
+        </motion.div>
+
+        {/* Bottom meta line */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.9, delay: 1.7 }}
+          className="absolute inset-x-0 bottom-0 z-10"
+        >
           <motion.div
-            style={{ y: yLogo }}
-            initial={reduce ? false : { opacity: 0, scale: 0.8, rotate: 8 }}
-            animate={reduce ? undefined : { opacity: 1, scale: 1, rotate: 5 }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
-            className="absolute -right-2 bottom-2 size-32 rounded-2xl border border-fire/40 bg-boom-surface/90 p-2 shadow-2xl backdrop-blur md:-right-6 md:size-40"
+            style={{ opacity: fade }}
+            className="mx-auto flex w-full max-w-6xl items-baseline justify-between gap-4 px-5 pb-6 font-mono text-xs uppercase tracking-[0.16em] text-foreground/80 md:text-sm"
           >
-            <div className="relative size-full overflow-hidden rounded-xl">
-              <Image
-                src="/images/logo-gaggaboom.jpeg"
-                alt="Gaggaboom Logo"
-                fill
-                sizes="160px"
-                className="object-cover"
-              />
-            </div>
+            <span>{site.person}</span>
+            <span>
+              {site.location} · <span className="text-acid">{site.instagramHandle}</span>
+            </span>
           </motion.div>
-        </div>
-      </div>
+        </motion.div>
 
-      {/* Scroll hint */}
-      <motion.div
-        aria-hidden
-        style={{ opacity }}
-        className="absolute inset-x-0 bottom-6 flex justify-center"
-      >
-        <div className="flex flex-col items-center gap-2 font-mono text-[0.62rem] uppercase tracking-[0.3em] text-muted-foreground">
-          Scroll
-          <span className="h-8 w-px animate-pulse bg-gradient-to-b from-fire to-transparent" />
-        </div>
-      </motion.div>
-    </section>
+        {/* Darkening veil — fades the whole hero to black between
+            50% and 100% of the viewport height scrolled */}
+        <motion.div
+          aria-hidden
+          style={{ opacity: darkness }}
+          className="pointer-events-none absolute inset-0 z-30 bg-black"
+        />
+      </section>
+    </MotionConfig>
   );
 }

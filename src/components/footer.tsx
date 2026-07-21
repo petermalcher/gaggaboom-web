@@ -1,25 +1,92 @@
-import { site } from "@/lib/content";
+"use client";
 
+import Image from "next/image";
+import { MotionConfig } from "motion/react";
+import { Reveal } from "@/components/reveal";
+import { funken, site } from "@/lib/content";
+
+/** Kontakt — clean black, Editorial-Stil wie die anderen Sektionen,
+ *  Portrait mit orangenem Duotone-Filter. */
 export function Footer() {
   return (
-    <footer className="border-t border-border py-8">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-5 text-sm text-muted-foreground md:flex-row md:px-8">
-        <div className="flex items-baseline gap-1.5 font-heading font-bold">
-          <span>Gagga</span>
-          <span className="text-fire">boom</span>
-          <span className="ml-2 font-sans text-xs font-normal text-muted-foreground">
-            © {new Date().getFullYear()} {site.person}
-          </span>
+    <MotionConfig reducedMotion="user">
+      <footer id="contact" className="relative overflow-hidden bg-background">
+        <div className="mx-auto flex min-h-[80svh] w-full max-w-6xl flex-col justify-between px-5 pb-6 pt-20 md:pt-28">
+          <Reveal>
+            <p className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.18em] text-foreground/90 md:text-sm">
+              <span aria-hidden className="flex flex-col gap-[3px]">
+                <span className="h-0.5 w-6 bg-acid" />
+                <span className="h-0.5 w-6 bg-stage-bright" />
+              </span>
+              Kontakt
+            </p>
+          </Reveal>
+
+          <div className="grid gap-10 py-14 md:grid-cols-[1.15fr_0.85fr] md:items-center md:gap-14 md:py-20">
+            <Reveal>
+              <div>
+                <a href={`mailto:${site.email}`} className="group block outline-none">
+                  <span className="font-heading text-5xl font-medium uppercase leading-[1.02] tracking-tight transition-colors duration-300 group-hover:text-acid group-focus-visible:text-acid sm:text-6xl md:text-8xl">
+                    Lass uns <span className="text-acid">drehen</span>
+                  </span>
+                  <span className="mt-6 block break-all font-mono text-sm uppercase tracking-[0.12em] text-foreground/85 underline-offset-4 group-hover:underline md:text-base">
+                    {site.email}
+                  </span>
+                </a>
+
+                <div className="mt-10 flex flex-col gap-2 font-mono text-xs uppercase leading-relaxed tracking-[0.12em] text-foreground/70 md:text-sm">
+                  <p>{funken.statementA}</p>
+                  <p>{funken.statementB}</p>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Portrait — orangener Filter, leicht gekippt wie die anderen Bilder */}
+            <Reveal delay={0.1}>
+              <figure className="group relative mx-auto w-full max-w-xs md:max-w-sm">
+                <div className="relative aspect-[4/5] rotate-2 overflow-hidden rounded-xl border border-border transition-all duration-500 group-hover:rotate-0 group-hover:border-acid/50">
+                  <Image
+                    src="/images/kontakt-portrait.jpg"
+                    alt="Kerstin Kleinenbrands — Schwarzweiß-Portrait mit INSIDE-Schriftzug"
+                    fill
+                    sizes="(max-width: 768px) 88vw, 380px"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  {/* Orangener Duotone-Filter */}
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 bg-stage-bright mix-blend-multiply transition-opacity duration-500 group-hover:opacity-60"
+                  />
+                </div>
+              </figure>
+            </Reveal>
+          </div>
+
+          <div className="flex flex-wrap items-end justify-between gap-6 border-t border-border pt-6 font-mono text-xs uppercase leading-relaxed tracking-[0.12em] text-foreground/80 md:text-sm">
+            <p>
+              Tel: auf Anfrage
+              <br />
+              E-Mail: {site.email}
+              <br />
+              Social Media:{" "}
+              <a
+                href={site.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-acid outline-none hover:underline focus-visible:underline"
+              >
+                {site.instagramHandle}
+              </a>
+            </p>
+            <p className="text-right">
+              {site.brand} · {site.person}
+              <br />
+              {site.location} · Überall wo’s kracht
+              <br />© {new Date().getFullYear()}
+            </p>
+          </div>
         </div>
-        <nav className="flex items-center gap-6 font-mono text-xs uppercase tracking-widest">
-          <a href="#" className="transition-colors hover:text-fire">
-            Impressum
-          </a>
-          <a href="#" className="transition-colors hover:text-fire">
-            Datenschutz
-          </a>
-        </nav>
-      </div>
-    </footer>
+      </footer>
+    </MotionConfig>
   );
 }

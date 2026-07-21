@@ -1,111 +1,85 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { nav, site } from "@/lib/content";
+import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from "motion/react";
+import { site } from "@/lib/content";
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  // Start with a huge sentinel so the header is guaranteed to be
+  // invisible on first render (before the real height is measured).
+  const [viewportHeight, setViewportHeight] = useState(1_000_000);
+  const [interactive, setInteractive] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    function updateViewportHeight() {
+      setViewportHeight(window.innerHeight);
+    }
+    updateViewportHeight();
+    window.addEventListener("resize", updateViewportHeight);
+    return () => window.removeEventListener("resize", updateViewportHeight);
   }, []);
 
+  // Fade in gradually with scroll progress, starting at 50% of the
+  // viewport height and fully visible shortly after.
+  const { scrollY } = useScroll();
+  const rawOpacity = useTransform(
+    scrollY,
+    [viewportHeight * 0.5, viewportHeight * 0.7],
+    [0, 1],
+    { clamp: true },
+  );
+  const rawY = useTransform(
+    scrollY,
+    [viewportHeight * 0.5, viewportHeight * 0.7],
+    [-16, 0],
+    { clamp: true },
+  );
+  const opacity = useSpring(rawOpacity, { stiffness: 220, damping: 26, mass: 0.4 });
+  const y = useSpring(rawY, { stiffness: 220, damping: 26, mass: 0.4 });
+
+  useMotionValueEvent(opacity, "change", (latest) => {
+    setInteractive(latest > 0.05);
+  });
+
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
-        scrolled
-          ? "border-b border-border bg-background/80 backdrop-blur-xl"
-          : "border-b border-transparent"
-      )}
+    <motion.header
+      style={{ opacity, y, pointerEvents: interactive ? "auto" : "none" }}
+      className="fixed inset-x-0 top-0 z-50 border-b border-border/40 bg-background/70 backdrop-blur-md"
     >
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 md:px-8">
-        <a
-          href="#top"
-          className="group flex items-baseline gap-1.5 font-heading text-lg font-bold tracking-tight"
-        >
-          <span>Gagga</span>
-          <span className="text-fire text-glow transition-transform group-hover:scale-110">
-            boom
-          </span>
-        </a>
-
-        <ul className="hidden items-center gap-9 md:flex">
-          {nav.map((item) => (
-            <li key={item.href}>
-              <a
-                href={item.href}
-                className="font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-fire"
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        <div className="flex items-center gap-2">
-          <Button asChild size="sm" className="hidden md:inline-flex">
-            <a href="#contact">Zusammenarbeiten</a>
-          </Button>
-          <button
-            type="button"
-            aria-label="Menü öffnen"
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
-            className="flex size-9 flex-col items-center justify-center gap-1.5 rounded-md border border-border md:hidden"
+      <nav
+            aria-label="Hauptnavigation"
+            className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5 font-mono text-xs uppercase tracking-[0.18em] md:py-7 md:text-sm"
           >
-            <span
-              className={cn(
-                "h-0.5 w-4 bg-foreground transition-transform",
-                open && "translate-y-2 rotate-45"
-              )}
-            />
-            <span
-              className={cn(
-                "h-0.5 w-4 bg-foreground transition-opacity",
-                open && "opacity-0"
-              )}
-            />
-            <span
-              className={cn(
-                "h-0.5 w-4 bg-foreground transition-transform",
-                open && "-translate-y-2 -rotate-45"
-              )}
-            />
-          </button>
-        </div>
+            <a href="#top" className="group flex flex-col outline-none">
+              <span
+                aria-hidden
+                className="font-display text-[1.15rem] font-bold uppercase leading-[0.95] tracking-tight text-foreground transition-colors group-hover:text-acid group-focus-visible:text-acid md:text-2xl"
+              >
+                GAGGABOOM
+              </span>
+              <span
+                aria-hidden
+                className="mt-0.5 font-mono text-[0.58rem] uppercase leading-none tracking-[0.2em] text-muted-foreground md:text-[0.77rem]"
+              >
+                KERSTIN KLEINENBRANDS
+              </span>
+              <span className="sr-only">Gaggaboom — Kerstin Kleinenbrands</span>
+            </a>
+            <div className="flex items-center gap-6 text-muted-foreground">
+              <a
+                href="#referenzen"
+                className="outline-none transition-colors hover:text-foreground focus-visible:text-foreground"
+              >
+                Referenzen
+              </a>
+              <a
+                href={`mailto:${site.email}`}
+                className="text-foreground outline-none transition-colors hover:text-acid focus-visible:text-acid"
+              >
+                Kontakt
+              </a>
+            </div>
       </nav>
-
-      {open && (
-        <div className="border-t border-border bg-background/95 backdrop-blur-xl md:hidden">
-          <ul className="flex flex-col gap-1 px-5 py-4">
-            {nav.map((item) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="block rounded-md px-2 py-2.5 font-mono text-sm uppercase tracking-widest text-muted-foreground transition-colors hover:text-fire"
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-            <li className="pt-2">
-              <Button asChild className="w-full">
-                <a href="#contact" onClick={() => setOpen(false)}>
-                  Zusammenarbeiten
-                </a>
-              </Button>
-            </li>
-          </ul>
-        </div>
-      )}
-    </header>
+    </motion.header>
   );
 }
