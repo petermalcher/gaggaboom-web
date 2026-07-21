@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import {
   motion,
   MotionConfig,
@@ -12,6 +12,7 @@ import {
   useTransform,
 } from "motion/react";
 import { hero, site } from "@/lib/content";
+import { useSvh } from "@/lib/use-svh";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -112,14 +113,8 @@ export function Hero() {
   }
 
   // Scroll-out parallax — bound to the global scroll position relative to
-  // the viewport height (robust: no target-based re-measuring, no resets).
-  const [vh, setVh] = useState(1);
-  useEffect(() => {
-    const update = () => setVh(Math.max(window.innerHeight, 1));
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
+  // the stable small-viewport height (no iOS browser-chrome jumps).
+  const vh = useSvh();
 
   const { scrollY } = useScroll();
   const imgScrollY = useTransform(scrollY, [0, vh], [0, reduce ? 0 : -60]);

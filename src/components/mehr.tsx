@@ -65,7 +65,7 @@ export function Mehr() {
                   alt={about.photo.alt}
                   fill
                   sizes="(max-width: 768px) 88vw, 420px"
-                  className="object-cover"
+                  className="object-cover brightness-150"
                 />
                 <motion.div
                   aria-hidden
@@ -73,7 +73,7 @@ export function Mehr() {
                   whileInView={{ opacity: 0 }}
                   viewport={{ once: true, margin: "-25% 0px" }}
                   transition={{ duration: 0.9, ease: "easeOut" }}
-                  className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"
+                  className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent"
                 />
               </motion.div>
               <figcaption className="mt-4 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-foreground/60">

@@ -1,23 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from "motion/react";
 import { site } from "@/lib/content";
+import { useSvh } from "@/lib/use-svh";
 
 export function Navbar() {
   // Start with a huge sentinel so the header is guaranteed to be
   // invisible on first render (before the real height is measured).
-  const [viewportHeight, setViewportHeight] = useState(1_000_000);
+  const viewportHeight = useSvh(1_000_000);
   const [interactive, setInteractive] = useState(false);
-
-  useEffect(() => {
-    function updateViewportHeight() {
-      setViewportHeight(window.innerHeight);
-    }
-    updateViewportHeight();
-    window.addEventListener("resize", updateViewportHeight);
-    return () => window.removeEventListener("resize", updateViewportHeight);
-  }, []);
 
   // Fade in gradually with scroll progress, starting at 50% of the
   // viewport height and fully visible shortly after.
@@ -55,7 +47,7 @@ export function Navbar() {
                 aria-hidden
                 className="font-display text-[1.15rem] font-bold uppercase leading-[0.95] tracking-tight text-foreground transition-colors group-hover:text-acid group-focus-visible:text-acid md:text-2xl"
               >
-                GAGGABOOM
+                GAGGA<span className="text-acid">BOOM</span>
               </span>
               <span
                 aria-hidden

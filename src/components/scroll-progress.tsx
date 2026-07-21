@@ -1,19 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
+import { useSvh } from "@/lib/use-svh";
 
 /** Thin fiery progress bar pinned to the top of the viewport.
- *  Fades in together with the navbar (50% → 85% of the viewport height). */
+ *  Fades in together with the navbar. */
 export function ScrollProgress() {
-  const [viewportHeight, setViewportHeight] = useState(1);
-
-  useEffect(() => {
-    const update = () => setViewportHeight(Math.max(window.innerHeight, 1));
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
+  const viewportHeight = useSvh(1_000_000);
 
   const { scrollY, scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {

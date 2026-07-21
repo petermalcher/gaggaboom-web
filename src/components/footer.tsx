@@ -46,7 +46,7 @@ export function Footer() {
               <figure className="relative w-full max-w-xs md:max-w-sm">
                 <div className="mb-6">
                   <p className="font-display text-3xl font-bold uppercase leading-[0.95] tracking-tight text-foreground md:text-4xl">
-                    GAGGABOOM
+                    GAGGA<span className="text-acid">BOOM</span>
                   </p>
                   <p className="mt-1 font-mono text-[0.95rem] uppercase leading-none tracking-[0.2em] text-muted-foreground md:text-sm">
                     KERSTIN KLEINENBRANDS
