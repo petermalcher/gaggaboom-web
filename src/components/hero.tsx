@@ -177,6 +177,7 @@ export function Hero() {
                   rotateY,
                   transformPerspective: 900,
                   aspectRatio: "923 / 1152",
+                  filter: "drop-shadow(0 18px 50px rgba(0,0,0,0.45))",
                 }}
                 className="relative h-[min(54svh,32rem)] w-auto max-w-[88vw]"
               >
@@ -188,7 +189,7 @@ export function Hero() {
                   sizes="(max-width: 768px) 88vw, 440px"
                   style={{
                     filter:
-                      "sepia(0.35) saturate(1.35) hue-rotate(-18deg) brightness(1.1) drop-shadow(0 18px 50px rgba(0,0,0,0.45))",
+                      "sepia(0.35) saturate(1.35) hue-rotate(-18deg) brightness(1.1)",
                   }}
                   className="object-contain"
                 />
