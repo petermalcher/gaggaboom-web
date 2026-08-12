@@ -18,6 +18,8 @@ const GRID_CLASS: Record<Cluster["ratio"], string> = {
 };
 
 function ClusterBlock({ cluster }: { cluster: Cluster }) {
+  // Alle Cluster einheitlich im "Festival & Live"-Format anzeigen.
+  const ratio: Cluster["ratio"] = "portrait";
   return (
     <div className="group/cluster py-10 md:py-14">
       <Reveal>
@@ -38,7 +40,7 @@ function ClusterBlock({ cluster }: { cluster: Cluster }) {
         whileInView="show"
         viewport={{ once: true, margin: "-60px" }}
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.06 } } }}
-        className={`mt-8 grid gap-2.5 md:gap-3 ${GRID_CLASS[cluster.ratio]}`}
+        className={`mt-8 grid gap-2.5 md:gap-3 ${GRID_CLASS[ratio]}`}
       >
         {cluster.items.map((item) => (
           <motion.li
@@ -64,7 +66,7 @@ function ClusterBlock({ cluster }: { cluster: Cluster }) {
                 whileInView={{ filter: "grayscale(0)" }}
                 viewport={{ once: true, margin: "-25% 0px" }}
                 transition={{ duration: 0.9, ease: "easeOut" }}
-                className={`relative block overflow-hidden rounded-xl border border-border group-focus-visible:ring-2 group-focus-visible:ring-ring ${RATIO_CLASS[cluster.ratio]}`}
+                className={`relative block overflow-hidden rounded-xl border border-border group-focus-visible:ring-2 group-focus-visible:ring-ring ${RATIO_CLASS[ratio]}`}
               >
                 <Image
                   src={item.src}
@@ -101,7 +103,7 @@ export function References() {
                 <p className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.18em] text-foreground/90 md:text-sm">
                   <span aria-hidden className="flex flex-col gap-[3px]">
                     <span className="h-0.5 w-6 bg-acid" />
-                    <span className="h-0.5 w-6 bg-stage-bright" />
+                    <span className="h-0.5 w-6 bg-acid" />
                   </span>
                   Referenzen
                 </p>

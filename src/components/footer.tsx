@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { MotionConfig } from "motion/react";
 import { Reveal } from "@/components/reveal";
-import { funken, site } from "@/lib/content";
+import { site } from "@/lib/content";
 
 /** Kontakt — clean black, Editorial-Stil wie die anderen Sektionen,
  *  Portrait mit orangenem Duotone-Filter. */
@@ -16,63 +17,52 @@ export function Footer() {
             <p className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.18em] text-foreground/90 md:text-sm">
               <span aria-hidden className="flex flex-col gap-[3px]">
                 <span className="h-0.5 w-6 bg-acid" />
-                <span className="h-0.5 w-6 bg-stage-bright" />
+                <span className="h-0.5 w-6 bg-acid" />
               </span>
               Kontakt
             </p>
           </Reveal>
 
-          <div className="grid gap-10 py-14 md:grid-cols-[1.15fr_0.85fr] md:items-center md:gap-14 md:py-20">
-            <Reveal y={12}>
-              <div>
-                <a href={`mailto:${site.email}`} className="group block outline-none">
-                  <span className="font-heading text-5xl font-medium uppercase leading-[1.02] tracking-tight transition-colors duration-300 group-hover:text-acid group-focus-visible:text-acid sm:text-6xl md:text-8xl">
-                    Lass uns <span className="text-acid">drehen</span>
-                  </span>
-                  <span className="mt-6 block break-all font-mono text-sm uppercase tracking-[0.12em] text-foreground/85 underline-offset-4 group-hover:underline md:text-base">
-                    {site.email}
-                  </span>
-                </a>
-
-                <div className="mt-10 flex flex-col gap-2 font-mono text-xs uppercase leading-relaxed tracking-[0.12em] text-foreground/70 md:text-sm">
-                  <p>{funken.statementA}</p>
-                  <p>{funken.statementB}</p>
-                </div>
-              </div>
-            </Reveal>
-
-            {/* Portrait — orangener Filter, Wordmark mittig darüber */}
+          <div className="grid items-center gap-10 py-14 md:grid-cols-[1.1fr_0.9fr] md:gap-16 md:py-24">
+            {/* Portrait — auf Mobile zuerst/oben, auf Desktop rechts */}
             <Reveal delay={0.1} y={12}>
-              <figure className="relative w-full max-w-xs md:max-w-sm">
-                <div className="mb-6">
-                  <p className="font-display text-3xl font-bold uppercase leading-[0.95] tracking-tight text-foreground md:text-4xl">
-                    GAGGA<span className="text-acid">BOOM</span>
-                  </p>
-                  <p className="mt-0.5 font-mono text-[0.95rem] uppercase leading-none tracking-[0.2em] text-muted-foreground md:text-sm">
-                    KERSTIN KLEINENBRANDS
-                  </p>
-                </div>
-                <div className="relative aspect-[4/5] overflow-hidden rounded-xl border border-border">
+              <figure className="relative order-first mx-auto w-full max-w-[15rem] md:order-last md:mx-0 md:ml-auto md:max-w-[22rem] lg:max-w-[25rem]">
+                <div className="relative aspect-square">
                   <Image
-                    src="/images/kontakt-portrait.jpg"
-                    alt="Kerstin Kleinenbrands — Schwarzweiß-Portrait mit INSIDE-Schriftzug"
+                    src="/images/kontakt-foto-v2.png"
+                    alt="Schwarzwei\u00df-Portrait von Kerstin Kleinenbrands"
                     fill
-                    sizes="(max-width: 768px) 88vw, 380px"
-                    className="object-cover"
-                  />
-                  {/* Orangener Duotone-Filter */}
-                  <div
-                    aria-hidden
-                    className="absolute inset-0 bg-stage-bright mix-blend-multiply"
+                    sizes="(max-width: 768px) 60vw, 35vw"
+                    className="object-contain"
+                    priority
                   />
                 </div>
               </figure>
+            </Reveal>
+
+            <Reveal y={12}>
+              <div className="text-center md:text-left">
+                <h2 className="font-heading text-3xl font-medium uppercase leading-[1.0] tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
+                  Zünde den <span className="text-acid">Funken</span>
+                </h2>
+
+                <p className="mx-auto mt-2 max-w-md font-mono text-xs uppercase leading-relaxed tracking-[0.14em] text-foreground/60 md:mx-0 md:text-sm">
+                  Mit Gaggaboom verbinden.
+                </p>
+
+                <a
+                  href={`mailto:${site.email}`}
+                  className="mt-8 inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-acid px-4 py-5 font-mono text-sm font-semibold uppercase tracking-[0.1em] text-primary-foreground outline-none transition-all hover:brightness-110 focus-visible:brightness-110 sm:w-fit sm:gap-3 sm:px-9 sm:text-base sm:tracking-[0.16em] md:px-11 md:py-6 md:text-lg"
+                >
+                  Projekt anfragen <span aria-hidden>→</span>
+                </a>
+              </div>
             </Reveal>
           </div>
 
           <div className="flex flex-wrap items-end justify-between gap-6 border-t border-white pt-6 font-mono text-xs uppercase leading-relaxed tracking-[0.12em] text-foreground/80 md:text-sm">
             <p>
-              Tel: auf Anfrage
+              Tel: Auf Anfrage
               <br />
               E-Mail: {site.email}
               <br />
@@ -86,11 +76,25 @@ export function Footer() {
                 {site.instagramHandle}
               </a>
             </p>
-            <p className="text-right">
+            <p className="text-left md:text-right">
               {site.brand} · {site.person}
               <br />
               {site.location} · Überall wo’s kracht
               <br />© {new Date().getFullYear()}
+              <br />
+              <Link
+                href="/impressum"
+                className="outline-none hover:underline focus-visible:underline"
+              >
+                Impressum
+              </Link>{" "}
+              ·{" "}
+              <Link
+                href="/datenschutz"
+                className="outline-none hover:underline focus-visible:underline"
+              >
+                Datenschutz
+              </Link>
             </p>
           </div>
         </div>

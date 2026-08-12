@@ -1,7 +1,7 @@
 export const site = {
   brand: "Gaggaboom",
   person: "Kerstin Kleinenbrands",
-  tagline: "Moderation · Reels · Vodcast",
+  tagline: "Zwischen Menschen und Marken",
   location: "Köln",
   email: "kerstinkleinenbrands@icloud.com",
   instagram: "https://www.instagram.com/gaggaboom/",
@@ -19,15 +19,15 @@ export const about = {
   headlineA: "Echte Inhalte.",
   headlineB: "Echter Einfluss.",
   lead:
-    "Gaggaboom ist Kerstin Kleinenbrands — Moderatorin und Content-Creatorin aus Köln. Keine Skripte, keine Steifheit: Ich halte drauf, wo was passiert, und hole raus, was Menschen wirklich zu sagen haben.",
+    "Ich bin’s: Kerstin Kleinenbrands alias Gaggaboom – Moderatorin | Storyteller | Social Media Reporterin | Brand Host aus Köln.",
   statement: "Ich kreiere Verbindungen zwischen Menschen und Marken.",
   body:
-    "Als Presenterin ziehe ich den roten Faden, der Ihr Produkt lebendig macht. Reels, Stories, Voice-over, Live-Moderation: Ich übernehme die authentische Präsentation — für maximale Sichtbarkeit und messbare Reichweite. Von der ersten Content-Strategie und Formatentwicklung bis zum fertigen Social-Media-Content, alles aus einer Hand.",
+    "Als Presenterin bin ich die Zündschnur, die euer Produkt lebendig macht. Reels, Stories, Voice-over, Live-Moderation: Ich übernehme die authentische Präsentation — für maximale Sichtbarkeit und messbare Reichweite. Von der ersten Content-Strategie und Formatentwicklung bis zum fertigen Social-Media-Content, alles aus einer Hand.",
   facts: ["10+ Jahre vor der Kamera", "500+ Interviews", "50+ Events & Festivals"],
   cta: "Let’s talk",
   photo: {
-    src: "/images/echte-inhalte.jpg",
-    alt: "Kerstin Kleinenbrands im Vodcast-Studio, im Profil vor dem Mikrofon",
+    src: "/images/studio-mikro-v2.jpg",
+    alt: "Kerstin Kleinenbrands mit Beanie am Studiomikrofon, hinter der Glasscheibe eines Aufnahmeraums",
     caption: "Im Studio · Vodcast-Aufnahme",
   },
 };
@@ -35,56 +35,26 @@ export const about = {
 /** Was ich mache — services. */
 export const services = {
   label: "Was ich mache",
-  headlineA: "Ihr Produkt.",
+  headlineA: "Euer Produkt.",
   headlineB: "Meine Stimme.",
   cta: "Anfrage stellen →",
   items: [
     {
-      emoji: "🎬",
-      title: "Reels & Short Content",
-      body: "Vertikale Videos, die stoppen. Für Events, Launches, Backstage-Momente — direkt vor Ort produziert, sofort einsatzbereit.",
-      image: {
-        src: "/images/inside-26.jpg",
-        alt: "Kerstin spricht in einer vertikalen Instagram-Story ins Ansteckmikrofon",
-      },
+      icon: "Clapperboard",
+      title: "Reels, Stories & Short Content",
+      body: "Vertikale Videos mit Scroll-Stopp-Effekt. Für Events, Launches und Backstage-Momente — direkt vor Ort produziert, sofort einsatzbereit.",
     },
     {
-      emoji: "🎤",
-      title: "Interviews & Portraits",
-      body: "Ich bringe Menschen zum Reden. Lebendig, natürlich, authentisch.",
-      image: {
-        src: "/images/interview-1.png",
-        alt: "On-Location Interview vor dem Backstage-Eingang eines Festivals",
-      },
+      icon: "Podcast",
+      title: "Interviews & Vodcasts",
+      body: "Ich bringe Menschen zum Reden und moderiere Formate, die eure Community wachsen lassen.",
     },
     {
-      emoji: "🎙️",
-      title: "Vodcasts",
-      body: "Audio trifft Bewegtbild. Ich produziere und moderiere Vodcast-Formate, die Ihre Community wachsen lassen.",
-      image: {
-        src: "/images/vodcast-studio.jpg",
-        alt: "Kerstin im Vodcast-Studio am Mikrofon",
-      },
+      icon: "Handshake",
+      title: "Event Coverage & Brand Collaboration",
+      body: "Live dabei, hinter den Kulissen — ich erzähle Geschichten, die Emotionen wecken und Vertrauen schaffen. Ob Event, Produktlaunch oder Unternehmensalltag. Ich halte fest, was sonst keiner zeigt. Kooperationen, die sich nicht wie Werbung anfühlen. Euer Produkt, meine Präsentation — glaubwürdig und wirksam.",
     },
-    {
-      emoji: "📸",
-      title: "Event Coverage",
-      body: "Live dabei — von der Ankunft bis zur After Party. Ich halte fest, was sonst keiner zeigt. Hinter die Kulissen — ich führe durch Ihr Event mit Energie und Charakter.",
-      image: {
-        src: "/images/festival-backstage.jpg",
-        alt: "Kerstin moderiert auf dem Festivalgelände vor dem Tapeman-Truck",
-      },
-    },
-    {
-      emoji: "🤝",
-      title: "Brand Collaboration",
-      body: "Kooperationen, die sich nicht wie Werbung anfühlen. Ihr Produkt, meine Stimme — glaubwürdig und wirksam.",
-      image: {
-        src: "/images/reissdorf-patches.jpg",
-        alt: "Selfie mit Puschel-Mikrofon bei der Reissdorf-Aktion",
-      },
-    },
-  ],
+  ] as const,
 };
 
 /** Footer. */
@@ -166,30 +136,6 @@ export const clusters: Cluster[] = [
         alt: "Victoria Reichelt im Vodcast",
         caption: "Victoria Reichelt im Vodcast",
         href: "https://www.instagram.com/reel/C6yJP7fM8ku/?igsh=MXZkYzNwMnQxZ2sw",
-      },
-      {
-        src: "/images/vodcast-maxmoor.png",
-        alt: "Max Moor im Vodcast",
-        caption: "Max Moor im Vodcast",
-        href: "https://www.instagram.com/reel/DFw3c2Zyr1P/?igsh=bmVyMThtZjJ1c3ds",
-      },
-      {
-        src: "/images/vodcast-ingo-dunja.jpg",
-        alt: "Ingo Zamperoni und Dunja Hayali im Vodcast",
-        caption: "Ingo Zamperoni & Dunja Hayali",
-        href: "https://www.instagram.com/reel/DRwPSMOjCRO/?igsh=MWFkaGxncnBoN2g1bg==",
-      },
-      {
-        src: "/images/interview-maik.jpg",
-        alt: "Seilbahn-Interview mit Maik Meuser",
-        caption: "RheinGefragt · Maik Meuser",
-        href: "https://www.youtube.com/shorts/IcwaELrsHsc",
-      },
-      {
-        src: "/images/backstage-tobi.jpg",
-        alt: "Tobi Krell Backstage Stories",
-        caption: "Tobi Krell · Backstage Stories",
-        href: "https://www.instagram.com/reel/DODfR8eCJHJ/?igsh=MXF2ajR5b2sxZm4weA==",
       },
     ],
   },

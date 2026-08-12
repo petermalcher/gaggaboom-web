@@ -15,14 +15,12 @@ function animateScrollTo(targetY: number) {
     window.scrollTo(0, targetY);
     return;
   }
-  const duration = Math.min(1600, 500 + Math.abs(distance) * 0.4);
+  const duration = Math.min(800, 250 + Math.abs(distance) * 0.2);
   const startTime = performance.now();
-  const easeInOut = (t: number) =>
-    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
   const step = (now: number) => {
     const p = Math.min((now - startTime) / duration, 1);
-    window.scrollTo(0, start + distance * easeInOut(p));
+    window.scrollTo(0, start + distance * p);
     if (p < 1) requestAnimationFrame(step);
   };
   requestAnimationFrame(step);
@@ -97,7 +95,7 @@ export function Navbar() {
               </span>
               <span
                 aria-hidden
-                className="mt-0.5 font-mono text-[0.58rem] uppercase leading-none tracking-[0.2em] text-muted-foreground md:text-[0.77rem]"
+                className="mt-0.5 font-mono text-[0.465rem] uppercase leading-none tracking-[0.2em] text-muted-foreground md:text-[0.605rem]"
               >
                 KERSTIN KLEINENBRANDS
               </span>

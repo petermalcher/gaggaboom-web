@@ -10,7 +10,7 @@
   --font-sans: var(--font-inter);
   --font-mono: var(--font-mono-code);
   --font-heading: var(--font-clash);
-  --font-display: var(--font-unbounded);
+  --font-display: var(--font-poppins);
 
   /* Brand tokens — stage green world */
   --color-stage: var(--stage);
@@ -67,7 +67,7 @@
   --stage-deep: oklch(0.52 0.13 45);
   --stage: oklch(0.64 0.17 48);
   --stage-bright: oklch(0.78 0.19 52);
-  --acid: oklch(0.9 0.18 100);
+  --acid: oklch(0.97 0.24 114);
 
   --background: var(--boom-black);
   --foreground: oklch(0.97 0.006 60);
@@ -117,8 +117,8 @@
     overflow-x: hidden;
   }
   ::selection {
-    background: var(--stage-bright);
-    color: var(--primary-foreground);
+    background: var(--acid);
+    color: var(--boom-black);
   }
   h1, h2, h3, .font-heading {
     font-family: var(--font-clash), var(--font-inter), sans-serif;
@@ -126,40 +126,23 @@
 }
 
 @layer utilities {
-  /* The green stage light — hero & footer */
+  /* The green stage light — hero & footer.
+     Glow radiates from the center outward; the sides fall off to black. */
   .stage-radial {
     background:
-      /* Light from the left edge */
+      /* Bright core in the middle */
       radial-gradient(
-        85% 100% at 0% 50%,
+        75% 75% at 50% 50%,
         var(--stage) 0%,
-        var(--stage-deep) 40%,
-        color-mix(in oklch, var(--stage-deep), transparent 55%) 62%,
+        var(--stage-deep) 42%,
+        color-mix(in oklch, var(--stage-deep), transparent 55%) 66%,
         transparent 100%
       ),
-      /* Light from the right edge */
+      /* Black corners/sides underneath */
       radial-gradient(
-        85% 100% at 100% 50%,
-        var(--stage) 0%,
-        var(--stage-deep) 40%,
-        color-mix(in oklch, var(--stage-deep), transparent 55%) 62%,
-        transparent 100%
-      ),
-      /* Light from the top edge */
-      radial-gradient(
-        100% 85% at 50% 0%,
-        var(--stage) 0%,
-        var(--stage-deep) 40%,
-        color-mix(in oklch, var(--stage-deep), transparent 55%) 62%,
-        transparent 100%
-      ),
-      /* Light from the bottom edge */
-      radial-gradient(
-        100% 85% at 50% 100%,
-        var(--stage) 0%,
-        var(--stage-deep) 40%,
-        color-mix(in oklch, var(--stage-deep), transparent 55%) 62%,
-        transparent 100%
+        120% 120% at 50% 50%,
+        transparent 45%,
+        #000 100%
       );
   }
   .stage-radial-bottom {
@@ -170,6 +153,19 @@
         var(--stage-deep) 55%,
         transparent 82%
       );
+  }
+
+  /* Neon glow for the accent (--acid) elements */
+  .acid-glow {
+    text-shadow:
+      0 0 8px color-mix(in oklch, var(--acid), transparent 40%),
+      0 0 22px color-mix(in oklch, var(--acid), transparent 55%),
+      0 0 44px color-mix(in oklch, var(--acid), transparent 70%);
+  }
+  .acid-glow-box {
+    box-shadow:
+      0 0 12px color-mix(in oklch, var(--acid), transparent 45%),
+      0 0 30px color-mix(in oklch, var(--acid), transparent 65%);
   }
 }
 

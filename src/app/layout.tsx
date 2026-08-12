@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Unbounded } from "next/font/google";
+import { Inter, JetBrains_Mono, Poppins } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -22,9 +22,10 @@ const clash = localFont({
   display: "swap",
 });
 
-const unbounded = Unbounded({
-  variable: "--font-unbounded",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["600", "700", "800"],
   display: "swap",
 });
 
@@ -64,7 +65,7 @@ export default function RootLayout({
   return (
     <html
       lang="de"
-      className={`${inter.variable} ${jetbrainsMono.variable} ${clash.variable} ${unbounded.variable} h-full antialiased`}
+      className={`${inter.variable} ${jetbrainsMono.variable} ${clash.variable} ${poppins.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

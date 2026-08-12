@@ -30,12 +30,12 @@ export function Mehr() {
           style={{ opacity: contentOpacity, y: contentY }}
           className="relative mx-auto w-full max-w-6xl px-5"
         >
-          <div className="grid gap-10 md:grid-cols-[1.15fr_0.85fr] md:items-end md:gap-14">
+          <div className="grid gap-10 md:grid-cols-[1.15fr_0.85fr] md:items-start md:gap-14">
             <div>
               <p className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.18em] text-foreground/90 md:text-sm">
                 <span aria-hidden className="flex flex-col gap-[3px]">
                   <span className="h-0.5 w-6 bg-acid" />
-                  <span className="h-0.5 w-6 bg-stage-bright" />
+                  <span className="h-0.5 w-6 bg-acid" />
                 </span>
                 {about.label}
               </p>
@@ -46,36 +46,22 @@ export function Mehr() {
                 <span className="text-acid">{about.headlineB}</span>
               </h2>
 
-              <p className="mt-8 max-w-2xl text-lg leading-relaxed text-foreground md:text-xl">
+              <p className="mt-8 max-w-2xl font-mono text-base leading-relaxed tracking-[0.04em] text-foreground md:text-lg">
                 {about.lead}
               </p>
             </div>
 
-            {/* Bild — leicht gekippt, wird beim Scrollen farbig */}
-            <figure className="relative w-full max-w-sm md:max-w-none">
-              <motion.div
-                initial={{ filter: "grayscale(1)" }}
-                whileInView={{ filter: "grayscale(0)" }}
-                viewport={{ once: true, margin: "-25% 0px" }}
-                transition={{ duration: 0.9, ease: "easeOut" }}
-                className="relative aspect-square overflow-hidden rounded-xl border border-border"
-              >
+            {/* Bild */}
+            <figure className="relative w-full max-w-sm md:ml-auto md:max-w-xs">
+              <div className="relative aspect-square overflow-hidden rounded-xl border border-border">
                 <Image
                   src={about.photo.src}
                   alt={about.photo.alt}
                   fill
                   sizes="(max-width: 768px) 88vw, 420px"
-                  className="object-cover brightness-150"
+                  className="object-cover"
                 />
-                <motion.div
-                  aria-hidden
-                  initial={{ opacity: 0.6 }}
-                  whileInView={{ opacity: 0 }}
-                  viewport={{ once: true, margin: "-25% 0px" }}
-                  transition={{ duration: 0.9, ease: "easeOut" }}
-                  className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent"
-                />
-              </motion.div>
+              </div>
               <figcaption className="mt-4 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-foreground/60">
                 {about.photo.caption}
               </figcaption>
@@ -90,6 +76,19 @@ export function Mehr() {
             <p className="mt-4 max-w-3xl font-mono text-sm leading-relaxed tracking-[0.06em] text-white md:mt-5 md:text-base">
               {about.body}
             </p>
+
+            {/* Video — 3:2, automatisch abspielend (stumm, in Schleife) */}
+            <div className="mt-10 aspect-[3/2] w-full overflow-hidden rounded-xl border border-border md:mt-14">
+              <video
+                src="/videos/mehr-v2.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                className="size-full object-cover"
+              />
+            </div>
           </div>
         </motion.div>
       </section>
