@@ -36,9 +36,9 @@ export default function DatenschutzPage() {
               <br />
               {site.brand}
               <br />
-              [STRASSE HAUSNUMMER]
+              Kerpener Str. 5
               <br />
-              [PLZ ORT]
+              50937 Köln
               <br />
               E-Mail:{" "}
               <a
