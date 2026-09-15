@@ -74,7 +74,7 @@ export function Mehr() {
               {about.statement}
             </h3>
             <p className="mt-4 max-w-3xl font-mono text-sm leading-relaxed tracking-[0.06em] text-white md:mt-5 md:text-base">
-              {about.body}
+              {about.presentation}
             </p>
 
             {/* Video — 3:2, automatisch abspielend (stumm, in Schleife) */}

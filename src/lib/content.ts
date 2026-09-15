@@ -21,7 +21,7 @@ export const about = {
   lead:
     "Ich bin’s: Kerstin Kleinenbrands alias Gaggaboom – Moderatorin | Storyteller | Social Media Reporterin | Brand Host aus Köln.",
   statement: "Ich kreiere Verbindungen zwischen Menschen und Marken.",
-  body:
+  presentation:
     "Als Presenterin bin ich die Zündschnur, die eure Botschaft auf die Zielgruppe überträgt. Reels, Stories, Voice-over, Live-Moderation: Von der ersten Content-Strategie und Formatentwicklung bis zum fertigen Social-Media-Content. Ich erzeuge Lebendigkeit durch eine authentische Präsentation — für maximale Sichtbarkeit und messbare Reichweite.",
   facts: ["10+ Jahre vor der Kamera", "500+ Interviews", "50+ Events & Festivals"],
   cta: "Let’s talk",
