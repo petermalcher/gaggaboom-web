@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     template: "%s · Gaggaboom",
   },
   description:
-    "Gaggaboom ist Kerstin Kleinenbrands: Moderatorin und Content-Creatorin aus Köln. Keine Skripte, keine Steifheit — Moderation, Reels, Vodcasts und Interviews, von der Formatidee bis zum fertigen Clip.",
+    "Kerstin Kleinenbrands alias Gaggaboom: Moderatorin, Brand Host und Content-Creatorin aus Köln für Events, Reels, Interviews und Vodcasts. Jetzt anfragen.",
   keywords: [
     "Gaggaboom",
     "Kerstin Kleinenbrands",
@@ -53,7 +53,9 @@ export const metadata: Metadata = {
       "Keine Skripte, keine Steifheit — Moderation, Reels, Vodcasts und Interviews mit Kerstin Kleinenbrands.",
     type: "website",
     locale: "de_DE",
+    siteName: "Gaggaboom",
   },
+  twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
 };
 
