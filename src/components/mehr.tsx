@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useRef } from "react";
 import { motion, MotionConfig, useScroll, useTransform } from "motion/react";
 import { about } from "@/lib/content";
@@ -51,19 +50,26 @@ export function Mehr() {
               </p>
             </div>
 
-            {/* Bild */}
+            {/* Trailer */}
             <figure className="relative w-full max-w-sm md:ml-auto md:max-w-xs">
-              <div className="relative aspect-square overflow-hidden rounded-xl border border-border">
-                <Image
-                  src={about.photo.src}
-                  alt={about.photo.alt}
-                  fill
-                  sizes="(max-width: 768px) 88vw, 420px"
-                  className="object-cover"
-                />
+              <div className="relative aspect-[9/16] overflow-hidden rounded-xl border border-border">
+                <video
+                  src={about.trailer.src}
+                  poster={about.trailer.poster}
+                  aria-label="Gaggaboom – Trailer"
+                  controls
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  className="size-full object-contain"
+                >
+                  <a href={about.trailer.src}>Trailer herunterladen</a>
+                </video>
               </div>
               <figcaption className="mt-4 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-foreground/60">
-                {about.photo.caption}
+                {about.trailer.caption}
               </figcaption>
             </figure>
           </div>
@@ -77,13 +83,11 @@ export function Mehr() {
               {about.presentation}
             </p>
 
-            {/* Video — 3:2, automatisch abspielend (stumm, in Schleife) */}
+            {/* Video — 3:2, Wiedergabe auf Wunsch */}
             <div className="mt-10 aspect-[3/2] w-full overflow-hidden rounded-xl border border-border md:mt-14">
               <video
                 src="/videos/mehr-v2.mp4"
-                autoPlay
-                muted
-                loop
+                controls
                 playsInline
                 preload="metadata"
                 className="size-full object-cover"

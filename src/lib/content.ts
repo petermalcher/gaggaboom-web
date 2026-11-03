@@ -25,10 +25,10 @@ export const about = {
     "Als Presenterin bin ich die Zündschnur, die eure Botschaft auf die Zielgruppe überträgt. Reels, Stories, Voice-over, Live-Moderation: Von der ersten Content-Strategie und Formatentwicklung bis zum fertigen Social-Media-Content. Ich erzeuge Lebendigkeit durch eine authentische Präsentation — für maximale Sichtbarkeit und messbare Reichweite.",
   facts: ["10+ Jahre vor der Kamera", "500+ Interviews", "50+ Events & Festivals"],
   cta: "Let’s talk",
-  photo: {
-    src: "/images/studio-mikro-v2.jpg",
-    alt: "Kerstin Kleinenbrands mit Beanie am Studiomikrofon, hinter der Glasscheibe eines Aufnahmeraums",
-    caption: "Im Studio · Vodcast-Aufnahme",
+  trailer: {
+    src: "/videos/gaggaboom-trailer.mp4",
+    poster: "/images/gaggaboom-trailer.jpg",
+    caption: "Gaggaboom · Der Trailer",
   },
 };
 
@@ -155,6 +155,18 @@ export const clusters: Cluster[] = [
         alt: "Einmal um Block mit Mona Ameziane",
         caption: "mit Moderatorin Mona Ameziane",
         href: "https://www.instagram.com/reel/DX_dJVfTpZw/?igsh=MWdxbXlhbmJ6dW5sZg==",
+      },
+      {
+        src: "/images/block-maria.jpg",
+        alt: "Einmal um Block mit Maria Popov",
+        caption: "mit Maria Popov",
+        href: "https://www.instagram.com/p/Db2WwTptM85/",
+      },
+      {
+        src: "/images/block-sophia-privat.jpg",
+        alt: "Einmal um Block – Sophia Maier privat",
+        caption: "Sophia Maier privat",
+        href: "https://www.instagram.com/p/DZ9pVLfI1Tg/",
       },
     ],
   },
